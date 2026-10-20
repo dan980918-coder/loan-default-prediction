@@ -105,8 +105,8 @@ bureau_agg AS (
     GROUP BY SK_ID_CURR
 ),
 
+-- bureau_balance에는 신청자 키가 없어서 bureau를 거쳐 연결 (bureau에 없는 기록은 INNER JOIN으로 빠짐)
 bureau_balance_joined AS (
-    -- 진짜 고아(bureau에 SK_ID_BUREAU 없음) 제외 후 bureau를 거쳐 SK_ID_CURR 연결
     SELECT b.SK_ID_CURR, bb.STATUS
     FROM read_csv_auto('{p_bureau_balance}') bb
     INNER JOIN read_csv_auto('{p_bureau}') b ON bb.SK_ID_BUREAU = b.SK_ID_BUREAU
@@ -115,6 +115,7 @@ bureau_balance_agg AS (
     SELECT
         SK_ID_CURR,
         COUNT(*) AS n_bureau_balance_records,
+        -- STATUS: 0=정상, 1~5=연체, C=종료, X=불명. X도 분모에 포함(연체 아님으로 셈)
         AVG(CASE WHEN STATUS IN ('1','2','3','4','5') THEN 1.0 ELSE 0.0 END) AS bureau_balance_delinquent_month_ratio
     FROM bureau_balance_joined
     GROUP BY SK_ID_CURR
@@ -131,18 +132,23 @@ prev_agg AS (
     GROUP BY SK_ID_CURR
 ),
 
--- 진짜 고아(previous_application에 SK_ID_PREV 없음) 제외 후 각 테이블의 자체 SK_ID_CURR로 직접 연결
+-- 할부·POS·카드 기록은 previous_application에 있는 대출 건만 사용
+prev_ids AS (
+    SELECT SK_ID_PREV FROM read_csv_auto('{p_prev}')
+),
 inst_filtered AS (
-    SELECT i.*
-    FROM read_csv_auto('{p_inst}') i
-    WHERE i.SK_ID_PREV IN (SELECT SK_ID_PREV FROM read_csv_auto('{p_prev}'))
+    SELECT *
+    FROM read_csv_auto('{p_inst}')
+    WHERE SK_ID_PREV IN (SELECT SK_ID_PREV FROM prev_ids)
 ),
 inst_agg AS (
     SELECT
         SK_ID_CURR,
         COUNT(*) AS n_installment_records,
+        -- 납부일이 비어 있는(미납) 회차는 비교가 NULL이라 지각 아님(0)으로 셈
         AVG(CASE WHEN DAYS_ENTRY_PAYMENT > DAYS_INSTALMENT THEN 1.0 ELSE 0.0 END) AS late_payment_ratio,
         AVG(CASE WHEN AMT_PAYMENT < AMT_INSTALMENT THEN 1.0 ELSE 0.0 END) AS underpay_ratio,
+        -- ELSE가 없어 제때 낸 회차는 NULL → 늦게 낸 회차만의 평균 지연일
         AVG(CASE WHEN DAYS_ENTRY_PAYMENT > DAYS_INSTALMENT THEN DAYS_ENTRY_PAYMENT - DAYS_INSTALMENT END) AS avg_delay_days,
         SUM(CASE WHEN DAYS_INSTALMENT >= -365 AND DAYS_ENTRY_PAYMENT > DAYS_INSTALMENT THEN 1 ELSE 0 END) * 1.0
             / NULLIF(SUM(CASE WHEN DAYS_INSTALMENT >= -365 THEN 1 ELSE 0 END), 0) AS recent_1yr_late_ratio
@@ -151,9 +157,9 @@ inst_agg AS (
 ),
 
 pos_filtered AS (
-    SELECT c.*
-    FROM read_csv_auto('{p_pos}') c
-    WHERE c.SK_ID_PREV IN (SELECT SK_ID_PREV FROM read_csv_auto('{p_prev}'))
+    SELECT *
+    FROM read_csv_auto('{p_pos}')
+    WHERE SK_ID_PREV IN (SELECT SK_ID_PREV FROM prev_ids)
 ),
 pos_agg AS (
     SELECT
@@ -165,9 +171,9 @@ pos_agg AS (
 ),
 
 cc_filtered AS (
-    SELECT c.*
-    FROM read_csv_auto('{p_cc}') c
-    WHERE c.SK_ID_PREV IN (SELECT SK_ID_PREV FROM read_csv_auto('{p_prev}'))
+    SELECT *
+    FROM read_csv_auto('{p_cc}')
+    WHERE SK_ID_PREV IN (SELECT SK_ID_PREV FROM prev_ids)
 ),
 cc_agg AS (
     SELECT
@@ -177,6 +183,7 @@ cc_agg AS (
     FROM cc_filtered
     GROUP BY SK_ID_CURR
 ),
+-- 카드별 가장 최근 달 한 행
 cc_latest AS (
     SELECT SK_ID_CURR, SK_ID_PREV, AMT_BALANCE, AMT_CREDIT_LIMIT_ACTUAL,
            ROW_NUMBER() OVER (PARTITION BY SK_ID_PREV ORDER BY MONTHS_BALANCE DESC) AS rn
@@ -185,6 +192,7 @@ cc_latest AS (
 cc_util_agg AS (
     SELECT
         SK_ID_CURR,
+        -- 카드별 비율의 평균이 아니라 잔액 합 / 한도 합 (한도가 큰 카드에 가중)
         SUM(AMT_BALANCE) * 1.0 / NULLIF(SUM(AMT_CREDIT_LIMIT_ACTUAL), 0) AS card_utilization
     FROM cc_latest
     WHERE rn = 1
@@ -218,7 +226,7 @@ SELECT
 
     cca.n_cc_records, cca.cc_dpd_month_ratio, cua.card_utilization,
 
-    -- 이력 보유 플래그 (가설5-3 "이력 없는 신청자" 식별용)
+    -- 다른 금융사 이력도, 이 회사 신청 이력도 없는 신청자
     CASE WHEN ba.n_bureau_records IS NULL AND pa.n_prev_records IS NULL THEN 1 ELSE 0 END AS no_history_at_all_flag
 
 FROM app_base a
