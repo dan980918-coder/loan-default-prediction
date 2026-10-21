@@ -68,13 +68,13 @@
         "bad_rate_pct": 24.185
       },
       {
-        "group": "swap_out(현행승인,새점수거절)",
+        "group": "swap_out(비교기준승인,새점수거절)",
         "n": 3833,
         "pct_of_total": 6.23,
         "bad_rate_pct": 16.932
       },
       {
-        "group": "swap_in(현행거절,새점수승인)",
+        "group": "swap_in(비교기준거절,새점수승인)",
         "n": 3833,
         "pct_of_total": 6.23,
         "bad_rate_pct": 8.636

@@ -246,7 +246,7 @@ for r in h6_table:
 champ_rate_80, _ = approved_bad_rate(champ_score, holdout["TARGET"].values, 0.80)
 new_rate_needed = scan_approval_rate_for_target_rate(new_score, holdout["TARGET"].values, champ_rate_80)
 approval_rate_increase = (new_rate_needed - 0.80) * 100 if new_rate_needed is not None else None
-print(f"\n현행 80% 승인율의 연체율 {champ_rate_80*100:.3f}%와 같거나 낮은 연체율을 새 점수는 {new_rate_needed*100 if new_rate_needed else 'N/A'}% 승인율에서 달성 (증가폭 {approval_rate_increase}%p)")
+print(f"\n비교 기준 80% 승인율의 연체율 {champ_rate_80*100:.3f}%와 같거나 낮은 연체율을 새 점수는 {new_rate_needed*100 if new_rate_needed else 'N/A'}% 승인율에서 달성 (증가폭 {approval_rate_increase}%p)")
 
 # 부트스트랩 95% CI (seed 고정, 복원추출 1,000회)
 boot_diffs = {a: [] for a in approval_rates}
@@ -288,8 +288,8 @@ new_approve_80 = approve_mask(new_score, 0.80)
 swap_groups = {
     "둘다승인": champ_approve_80 & new_approve_80,
     "둘다거절": (~champ_approve_80) & (~new_approve_80),
-    "swap_out(현행승인,새점수거절)": champ_approve_80 & (~new_approve_80),
-    "swap_in(현행거절,새점수승인)": (~champ_approve_80) & new_approve_80,
+    "swap_out(비교기준승인,새점수거절)": champ_approve_80 & (~new_approve_80),
+    "swap_in(비교기준거절,새점수승인)": (~champ_approve_80) & new_approve_80,
 }
 swap_table = []
 for name, mask in swap_groups.items():
@@ -406,7 +406,7 @@ fig, ax = plt.subplots(figsize=(8, 6))
 grid = np.arange(0.50, 1.0001, 0.01)
 champ_curve = [approved_bad_rate(champ_score, target_vals, a)[0] * 100 for a in grid]
 new_curve = [approved_bad_rate(new_score, target_vals, a)[0] * 100 for a in grid]
-ax.plot(grid * 100, champ_curve, label="현행 기준(외부점수)", color="#4C72B0")
+ax.plot(grid * 100, champ_curve, label="비교 기준(외부점수)", color="#4C72B0")
 ax.plot(grid * 100, new_curve, label=f"새 점수({final_label})", color="#C44E52")
 ax.axhline(base_rate * 100, color="gray", linestyle=":", label=f"전원승인 기저율 {base_rate*100:.2f}%")
 for a in approval_rates:
@@ -416,7 +416,7 @@ for a in approval_rates:
     ax.axvline(a * 100, color="lightgray", linestyle="--", linewidth=0.7)
 ax.set_xlabel("승인율(%)")
 ax.set_ylabel("승인군 연체율(%)")
-ax.set_title("현행 기준 vs 새 점수: 승인율-연체율 트레이드오프 (최종평가 세트)")
+ax.set_title("비교 기준 vs 새 점수: 승인율-연체율 트레이드오프 (최종평가 세트)")
 ax.legend()
 plt.tight_layout()
 plt.savefig(os.path.join(FIG_DIR, "tradeoff_champion_vs_challenger.png"), dpi=130)
@@ -451,7 +451,7 @@ for r in r_values:
         champ_index = champ_profits / full_approval_profit * 100
         new_index = new_profits / full_approval_profit * 100
         ax.plot(approval_grid * 100, new_index, label="새 점수", color="#C44E52")
-        ax.plot(approval_grid * 100, champ_index, label="현행", color="#4C72B0", linestyle="--")
+        ax.plot(approval_grid * 100, champ_index, label="비교 기준", color="#4C72B0", linestyle="--")
         champ_best_i = np.argmax(champ_profits)
         new_best_i = np.argmax(new_profits)
         ax.scatter(approval_grid[champ_best_i] * 100, champ_index[champ_best_i], color="#4C72B0", zorder=5)
