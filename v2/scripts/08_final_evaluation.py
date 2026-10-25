@@ -1,6 +1,6 @@
 """
 08_final_evaluation.py
-Loan Approval Risk Scoring - v2 재분석
+Loan Default Prediction - v2 재분석
 4단계 3절: 최종 평가. 최종평가(holdout) 세트를 이 스크립트에서 처음 연다.
 모든 모델·설정은 07_models.py에서 이미 확정됐고, 이 스크립트는 그 결과를
 불러와 적용만 한다 - 결과를 보고 모델/변수/설정을 바꾸지 않는다.

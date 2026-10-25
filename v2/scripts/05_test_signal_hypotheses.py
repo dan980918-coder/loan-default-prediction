@@ -1,6 +1,6 @@
 """
 05_test_signal_hypotheses.py
-Loan Approval Risk Scoring - v2 재분석
+Loan Default Prediction - v2 재분석
 3단계: 연체 신호 가설(H1~H5) 검증. 학습 세트(60%)만 사용한다.
 
 산출:

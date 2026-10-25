@@ -1,6 +1,6 @@
 # 가설 검증용 변수 정의 (3단계)
 
-연체 위험 기반 대출 승인 기준 설계 (Loan Approval Risk Scoring) — v2 재분석
+대출 연체 예측 (Loan Default Prediction) — v2 재분석
 
 재현 코드: [`v2/scripts/04_build_hypothesis_features.py`](../scripts/04_build_hypothesis_features.py) · 산출물: `v2/data/features/hypothesis_features.parquet` (307,511행 x 140열, 데이터 파일은 커밋하지 않음)
 

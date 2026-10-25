@@ -1,6 +1,6 @@
 """
 04_build_hypothesis_features.py
-Loan Approval Risk Scoring - v2 재분석
+Loan Default Prediction - v2 재분석
 3단계: 가설(H1~H5) 검증을 위한 신청자(SK_ID_CURR) 단위 변수 생성.
 
 대상: application_train 307,511명 전체 (분할과 무관하게 변수는 전체에 대해 생성,

@@ -1,6 +1,6 @@
 """
 03a_orphan_recheck.py
-Loan Approval Risk Scoring - v2 재분석
+Loan Default Prediction - v2 재분석
 1단계 보고서 오류 확인: 고아 레코드 비율의 분모 방향을 양방향으로 재계산한다.
 
 실행: python3 -I v2/scripts/03a_orphan_recheck.py

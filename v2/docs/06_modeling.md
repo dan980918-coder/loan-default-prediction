@@ -1,6 +1,6 @@
 # 모델링 (4단계 2절)
 
-연체 위험 기반 대출 승인 기준 설계 (Loan Approval Risk Scoring) — v2 재분석
+대출 연체 예측 (Loan Default Prediction) — v2 재분석
 
 재현 코드: [`v2/scripts/07_models.py`](../scripts/07_models.py) · 원본 수치: [`modeling_results.json`](modeling_results.json) · 점수표: [`06_scorecard_points.md`](06_scorecard_points.md)
 

@@ -1,6 +1,6 @@
 """
 03_split.py
-Loan Approval Risk Scoring - v2 재분석
+Loan Default Prediction - v2 재분석
 데이터 분할: application_train 307,511명을 TARGET 기준 층화추출로
 학습 60% / 검증 20% / 최종평가 20%로 분할한다.
 

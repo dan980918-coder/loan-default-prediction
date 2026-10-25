@@ -1,6 +1,6 @@
 # 코드 해설서
 
-연체 위험 기반 대출 승인 기준 설계 (Loan Approval Risk Scoring) — v2 재분석
+대출 연체 예측 (Loan Default Prediction) — v2 재분석
 
 이 문서는 `v2/scripts/01~05`가 무엇을, 왜 그렇게 했는지 설명한다. 검증은 [`v2/verification/`](../verification/)의 체크리스트·노트북으로 한다.
 

@@ -19,7 +19,7 @@ def code(text):
 
 md("""# 검증 노트북
 
-연체 위험 기반 대출 승인 기준 설계 (Loan Approval Risk Scoring) — v2 1~3단계 직접 검증
+대출 연체 예측 (Loan Default Prediction) — v2 1~3단계 직접 검증
 
 **독립성**: 이 노트북은 `v2/scripts/`의 함수를 import하지 않는다. `data/raw/`의 원본 CSV에서 매번 다시 계산한다.
 `v2/verification/checklist.md`의 번호와 셀이 1:1로 대응한다. **이 노트북은 실행하지 않은 상태로 커밋됐다 — 출력은 직접 실행해서 확인한다.**""")

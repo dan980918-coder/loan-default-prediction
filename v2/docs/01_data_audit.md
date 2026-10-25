@@ -1,6 +1,6 @@
 # 원데이터 점검 (1단계)
 
-연체 위험 기반 대출 승인 기준 설계 (Loan Approval Risk Scoring) — v2 재분석
+대출 연체 예측 (Loan Default Prediction) — v2 재분석
 
 데이터 출처: Home Credit Default Risk (Kaggle, 해외 소비자금융사 공개 대출 데이터)
 

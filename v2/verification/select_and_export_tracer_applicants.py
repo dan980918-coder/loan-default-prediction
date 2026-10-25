@@ -1,6 +1,6 @@
 """
 select_and_export_tracer_applicants.py
-Loan Approval Risk Scoring - v2 검증 키트
+Loan Default Prediction - v2 검증 키트
 
 학습 세트에서 이력이 풍부한 신청자 3명을 무작위(seed 고정)로 골라,
 체크리스트 8~10번 항목 검증에 쓸 원본 테이블 행을 CSV로 내보낸다.

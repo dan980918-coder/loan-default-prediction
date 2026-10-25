@@ -1,6 +1,6 @@
 """
 07_models.py
-Loan Approval Risk Scoring - v2 재분석
+Loan Default Prediction - v2 재분석
 4단계 2절: 모델링. 학습 세트로 학습하고 검증 세트로 모델·설정을 선택한다.
 최종평가(holdout) 세트는 이 스크립트에서 전혀 읽지 않는다.
 

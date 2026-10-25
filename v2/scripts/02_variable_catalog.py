@@ -1,6 +1,6 @@
 """
 02_variable_catalog.py
-Loan Approval Risk Scoring - v2 재분석
+Loan Default Prediction - v2 재분석
 2단계: 변수 파악 (업무 의미별 분류, 분포 요약)
 
 실행: python3 v2/scripts/02_variable_catalog.py

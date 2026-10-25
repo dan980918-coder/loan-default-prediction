@@ -1,6 +1,6 @@
 # 연체 신호 가설 검증 (3단계)
 
-연체 위험 기반 대출 승인 기준 설계 (Loan Approval Risk Scoring) — v2 재분석
+대출 연체 예측 (Loan Default Prediction) — v2 재분석
 
 재현 코드: [`v2/scripts/05_test_signal_hypotheses.py`](../scripts/05_test_signal_hypotheses.py) · 원본 수치: [`hypothesis_results.json`](hypothesis_results.json) · 변수 정의: [`03_features.md`](03_features.md)
 

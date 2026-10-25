@@ -1,6 +1,6 @@
 """
 01_data_audit.py
-Loan Approval Risk Scoring (연체 위험 기반 대출 승인 기준 설계) - v2 재분석
+Loan Default Prediction (대출 연체 예측) - v2 재분석
 1단계: 원데이터 점검
 
 실행: python3 v2/scripts/01_data_audit.py

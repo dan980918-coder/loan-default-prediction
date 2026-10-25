@@ -1,6 +1,6 @@
 """
 06_h2_followup.py
-Loan Approval Risk Scoring - v2 재분석
+Loan Default Prediction - v2 재분석
 4단계 1절: H2(상환부담) 기각 원인 탐색. "기존 심사가 이미 부담이 큰 신청자를
 걸러냈다"는 가설을 정황 증거로만 살펴본다 (단정하지 않음). 학습 세트만 사용.
 
